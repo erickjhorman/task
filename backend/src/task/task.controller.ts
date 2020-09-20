@@ -40,12 +40,21 @@ export class TaskController {
   }
 
   @Put(':id')
-  updateOne(@Param('id', ParseIntPipe) id: number, @Body() dto: EditTasksDto) {
-    return this.taskService.updateOne(id, dto);
+  async updateOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: EditTasksDto,
+  ) {
+    const data = await this.taskService.updateOne(id, dto);
+    return {
+      message: 'Task has been successfully updated.',
+    };
   }
 
   @Delete(':id')
-  deleteOne(@Param('id', ParseIntPipe) id: number) {
-    return this.taskService.deleteOne(id);
+  async deleteOne(@Param('id', ParseIntPipe) id: number) {
+    const data = await this.taskService.deleteOne(id);
+    return {
+      message: 'Task has been successfully deleted.',
+    };
   }
 }

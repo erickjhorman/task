@@ -7,6 +7,11 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      redirect: { name: 'tasks' },
+    },
+
+    {
       path: '/tasks',
       alias: '/tasks',
       name: 'tasks',

@@ -17,8 +17,8 @@ export class Task {
   description: string;
 
   @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
+  created_at: Date;
 
   @CreateDateColumn({ type: 'timestamp' })
-  updatedAt: Date;
+  updated_at: Date;
 }

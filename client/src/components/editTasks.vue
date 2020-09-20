@@ -3,7 +3,7 @@
     <div class="card" style="width: 20rem;  ">
       <div class="card-body">
         <h5 class="card-title text-center">Edit Task</h5>
-        <form @submit.prevent="updateTask" data-toggle="validator" novalidate="true">
+        <form @submit.prevent="updateTask">
           <div class="form-group">
             <input
               type="text"
@@ -13,6 +13,9 @@
               v-model="task.name"
               data-error="Please enter your  name."
             />
+            <small id="nameHelp" class="form-text text-muted"
+              >Enter a name betwen 5 and 30 characteres.</small
+            >
             <div class="help-block with-errors"></div>
           </div>
           <div class="form-group">
@@ -24,7 +27,11 @@
               v-model="task.description"
               data-error="Please enter any description."
             />
+
             <div class="help-block with-errors"></div>
+            <small id="nameHelp" class="form-text text-muted"
+              >Enter a description betwen 10 and 150 characteres.</small
+            >
           </div>
           <button type="submit" class="btn btn-primary btn-block">Edit</button>
         </form>
@@ -33,7 +40,7 @@
   </div>
 </template>
 <script>
-import TaskDataService from "../services/tasksService";
+import TaskDataService from '../services/tasksService';
 
 class Task {
   constructor(name, description) {
@@ -42,18 +49,19 @@ class Task {
 }
 
 export default {
-  name: "app",
+  name: 'app',
   data() {
     return {
       tasks: [],
       id: 0,
       task: new Task(),
       submitted: false,
+      message: '',
     };
   },
   methods: {
     getTask(id) {
-      TaskDataService.getOne(id).then((response) => {
+      TaskDataService.getOne(id).then(response => {
         this.task = new Task(response.data.name, response.data.description);
         console.log(response);
         console.log(this.tasks);
@@ -66,13 +74,20 @@ export default {
       };
 
       TaskDataService.updateTask(this.id, data)
-        .then((response) => {
+        .then(response => {
           console.log(response);
           this.submitted = true;
           this.task = new Task();
-          this.$router.push({ name: "tasks" });
+
+          this.message = response.data.message;
+          this.$notify({
+            group: 'create',
+            text: this.message,
+          });
+
+          this.$router.push({ name: 'tasks' });
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
